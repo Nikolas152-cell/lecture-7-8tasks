@@ -3,12 +3,13 @@ package org.example.config.dao;
 import org.example.config.models.Author;
 import org.example.config.models.Book;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class AuthorDAO {
     private List<Author> authors;
 
@@ -18,7 +19,6 @@ public class AuthorDAO {
         Book book = new Book();
         book.setTitle("Some book");
         book.setId(2);
-        author.setBook(book);
         author.setName("Some author");
         author.setId(1);
         authors.add(author);
