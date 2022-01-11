@@ -7,13 +7,14 @@
 <body>
 All books that are in collections:<br>
     <div th:each="book: ${books}">
-        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getTitle()}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getTitle()}"
+        >
         Book</a>
+        <h1 th:text="${book.author.id}">Author</h1>
+        <h1 th:text="${book.author.getName()}">Author</h1>
     </div>
-
 <br>
-<hr>
 
-<a href="/books/new">Add new book</a>
+<a href="http://localhost:8080/practicsLecture5_6MVC_war_exploded/books/new">Add new book</a>
 </body>
 </html>

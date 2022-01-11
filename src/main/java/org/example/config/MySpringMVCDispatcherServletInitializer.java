@@ -1,6 +1,7 @@
 package org.example.config;
 
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -11,7 +12,7 @@ public class MySpringMVCDispatcherServletInitializer extends
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+        return  new Class[]{HibernateConfig.class};
     }
 
     @Override
@@ -34,4 +35,6 @@ public class MySpringMVCDispatcherServletInitializer extends
         aContext.addFilter("hiddenHttpMethodFilter",
                 new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
     }
+
+
 }

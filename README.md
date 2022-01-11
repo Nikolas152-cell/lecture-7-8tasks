@@ -1,3 +1,3 @@
-# lecture-5-6-tasks
-spring mvc crud project using thymeleaf for views
-books -> author(many to one)
+#lecture 7-8 tasks
+mvc app with database
+

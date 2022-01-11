@@ -1,30 +1,65 @@
 package org.example.config.dao;
 
 import org.example.config.models.Author;
-import org.example.config.models.Book;
-import org.springframework.stereotype.Component;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class AuthorDAO {
-    private List<Author> authors;
 
+    private SessionFactory sessionFactory;
+
+
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Transactional
+    public List getAuthors()
     {
-        authors = new ArrayList<>();
-        Author author = new Author();
-        Book book = new Book();
-        book.setTitle("Some book");
-        book.setId(2);
-        author.setName("Some author");
-        author.setId(1);
-        authors.add(author);
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from author").list();
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public long getIdByAuthor(Author author)
+    {
+        return author.getId();
     }
+
+
+    public Author getAuthor(long id)
+    {
+        Session session = sessionFactory.getCurrentSession();
+        return (Author) session.get(Author.class, id);
+    }
+
+    public void addAuthor(Author author)
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(author);
+    }
+
+    public void deleteAuthor(long id)
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(this.getAuthor(id));
+    }
+
+
+    public void updateAuthor(Author author)
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.update(author);
+    }
+
+
+
+
 }

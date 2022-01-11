@@ -1,6 +1,11 @@
 package org.example.config.dao;
 
+import org.example.config.models.Author;
 import org.example.config.models.Book;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -11,44 +16,47 @@ import java.util.stream.Collectors;
 
 @Repository
 public class BookDAO {
-    private List<Book> books;
+    private SessionFactory sessionFactory;
 
 
-    public List<Book> getBooks() {
-        return books;
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Book> allBooks()
     {
-        books = new ArrayList<>();
-        Book book = new Book();
-        book.setId(2);
-        book.setTitle("Some book");
-        books.add(book);
-        Book book1 = new Book();
-        book1.setId(3);
-        book1.setTitle("Some book1");
-        books.add(book1);
-    }
-    public Book get(int id)
-    {
-        return books.stream().filter(book -> book.getId() == id).findFirst().orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from book").list();
     }
 
-    public void save(Book book, int id)
+
+    public Book getBook(long id)
     {
-        book.setId(id);
-        books.add(book);
+        Session session = sessionFactory.getCurrentSession();
+        return (Book) session.get(Book.class, id);
     }
 
-    public void update(int id, Book book)
+    public void save(Book book)
     {
-        Book bookToBeUpdated = get(id);
-        bookToBeUpdated.setTitle(book.getTitle());
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(book);
     }
 
-    public void delete(int id)
+    public void update(Book book)
     {
-        books.removeIf(book -> book.getId() == id);
+        Session session = sessionFactory.getCurrentSession();
+        session.update(book);
+    }
+
+    public void delete(long id)
+    {
+        Session session = sessionFactory.getCurrentSession();
+        Book deletedBook = this.getBook(id);
+        Author author = deletedBook.getAuthor();
+        //session.delete(author);
+        session.delete(deletedBook);
     }
 
 }

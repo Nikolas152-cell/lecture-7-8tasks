@@ -9,7 +9,17 @@
     <label for="title">Enter title</label>
     <input type="text" th:field="*{title}" id="title"/>
     <br>
+    <label for="author">Enter author</label>
+        <input type="text" th:field="*{author.name}" id="author"/>
+        <br>
     <input type="submit" value="Add book">
 </form>
+<!-- <form th:method="POST" th:action="@{/books}" th:object="${author}">
+    <label for="author">Enter author</label>
+    <input type="text" th:field="*{name}" id="author"/>
+    <br>
+    <input type="submit" value="Add book">
+</form> -->
+
 </body>
 </html>

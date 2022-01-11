@@ -1,46 +1,65 @@
 package org.example.config.services;
 
+import org.example.config.dao.AuthorDAO;
 import org.example.config.dao.BookDAO;
+import org.example.config.models.Author;
 import org.example.config.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service("BookService")
+@Service
 public class BookServiceImpl implements BookService {
+
+
 
 
     @Autowired
     private BookDAO bookDAO;
+    @Autowired
+    private AuthorDAO authorDAO;
     private static final AtomicInteger BOOK_ID = new AtomicInteger();
 
-
-
-
-    @Override
-    public List<Book> readAll() {
-        System.out.println(bookDAO.getBooks());
-        List<Book> bookList = bookDAO.getBooks();
-        return bookList;
-    }
-
-    public Book get(int id)
+    @Transactional
+    public List<Book> allBooks()
     {
-        return bookDAO.get(id);
+        return bookDAO.allBooks();
     }
 
-    public void create(Book book)
+
+    @Transactional
+    public Book get(long id)
     {
-        bookDAO.save(book, BOOK_ID.incrementAndGet());
+        return bookDAO.getBook(id);
     }
 
-    public void update(Book book, int id)
+
+    private static int count = 0;
+    @Transactional
+    public void create(Book book, long authorId, String authorName)
     {
-        bookDAO.update(id,book);
+        Author author = new Author(authorName);
+        author.addBook(book);
+        author.setId(++count);
+        authorDAO.addAuthor(author);
+        book.setAuthor(author);
+        bookDAO.save(book);
     }
 
+    @Transactional
+    public void update(Book book, String bookTitle)
+    {
+        book = bookDAO.getBook(book.getId());
+        System.out.println(book.getId());
+        authorDAO.updateAuthor(book.getAuthor());
+        book.setTitle(bookTitle);
+        bookDAO.update(book);
+    }
+    @Transactional
     public void delete(int id)
     {
         bookDAO.delete(id);

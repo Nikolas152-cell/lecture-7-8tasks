@@ -6,9 +6,12 @@
 </head>
 <body>
 <div th:each="author : ${authors}">
-<h1 th:text="${author.name}"></h1>
-<h1 th:text="${author.book.title}"></h1>
-<h1 th:text="${author.id}"></h1>
+<p th:text="${author.name}"></p>
+<p th:text="${author.id}"></p>
+<div th:each="book: ${author.books}">
+<p th:text="${book.title}"></p>
+</div>
+
     </div>
 </body>
 </html>
