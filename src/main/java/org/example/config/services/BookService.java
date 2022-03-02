@@ -12,6 +12,10 @@ public interface BookService {
 
     List<Book> allBooks();
 
+    void create(String bookTitle, String authorName);
+
+    void create(Book book);
+
     Book get(long id);
 
     void create(Book book,long authorId, String authorName);

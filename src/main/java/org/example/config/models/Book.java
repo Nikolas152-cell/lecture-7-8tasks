@@ -1,5 +1,6 @@
 package org.example.config.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
@@ -13,8 +14,9 @@ public class Book {
     private Long id;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private Author author;
 
     public Author getAuthor() {

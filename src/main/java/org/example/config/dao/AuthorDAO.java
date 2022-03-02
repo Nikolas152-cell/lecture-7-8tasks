@@ -33,6 +33,10 @@ public class AuthorDAO {
         return author.getId();
     }
 
+    public Author getAuthor(String name){
+        Session session = sessionFactory.getCurrentSession();
+        return (Author) session.get(Author.class, name);
+    }
 
     public Author getAuthor(long id)
     {
